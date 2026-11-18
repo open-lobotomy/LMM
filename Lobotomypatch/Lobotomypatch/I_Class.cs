@@ -9,7 +9,6 @@ using System.Reflection;
 using System.Text;
 using UnityEngine.UI;
 using UnityEngine;
-using Harmony;
 using LobotomyBaseModLib;
 
 namespace Lobotomypatch

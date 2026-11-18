@@ -1,5 +1,4 @@
-﻿using Harmony;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,7 +21,6 @@ using Lobotomypatch;
 using CreatureInfo;
 using UnityEngine.SocialPlatforms;
 using LobotomyBaseModLib;
-using LobotomyBaseMod;
 
 
 
@@ -327,16 +325,36 @@ namespace Lobotomypatch
                 ModAssetBundleManager.Instance.Init();
                 ModOptionManager.Instance.Init();
                 bool isError = false;
+                var activeModDirs = new List<DirectoryInfo>();
+                foreach (ModInfo modinfo in this.ModList)
+                {
+                    ModInfo_patch pmodinfo = modinfo.ForceTypeChange<ModInfo_patch>();
+                    activeModDirs.Add(pmodinfo.modpath);
+                }
+                LobotomyBaseModLib.LmmModLoader.PrepareModDirectories(
+                    activeModDirs,
+                    msg =>
+                    {
+                        ModDebug.Log(msg);
+                        if (msg != null && (msg.StartsWith("Mod load error", StringComparison.Ordinal) || msg.StartsWith("Mod scan error", StringComparison.Ordinal)))
+                        {
+                            isError = true;
+                        }
+                    }
+                );
                 foreach (ModInfo modinfo in this.ModList)
                 {
                     ModInfo_patch pmodinfo = modinfo.ForceTypeChange<ModInfo_patch>();
                     foreach (FileInfo fileInfo2 in pmodinfo.modpath.GetFiles())
                     {
-                        if (fileInfo2.Name.Contains(".dll"))
+                        if (string.Equals(fileInfo2.Extension, ".dll", StringComparison.OrdinalIgnoreCase))
                         {
-                            foreach (Type type in Assembly.LoadFile(fileInfo2.FullName).GetTypes())
+                            Assembly modAssembly = LobotomyBaseModLib.LmmModLoader.GetLoadedAssemblyForFile(fileInfo2.FullName);
+                            if (modAssembly == null) continue;
+                            foreach (Type type in modAssembly.GetTypes())
                             {
-                                if (type.Name == "Harmony_Patch")
+                                if (type.Name == "Harmony_Patch"
+                                    && LobotomyBaseModLib.LmmModLoader.TryClaimEntryPoint(modAssembly, type.FullName, "Harmony_Patch"))
                                 {
                                     try
                                     {
@@ -353,7 +371,8 @@ namespace Lobotomypatch
                                 try
                                 {
 
-                                    if (type.IsSubclassOf(typeof(ModInitializer)))
+                                    if (type.IsSubclassOf(typeof(ModInitializer))
+                                        && LobotomyBaseModLib.LmmModLoader.TryClaimEntryPoint(modAssembly, type.FullName, "ModInitializer"))
                                     {
                                         ModInitializer init = Activator.CreateInstance(type) as ModInitializer;
                                         init.MODID = pmodinfo.modid;
@@ -366,7 +385,10 @@ namespace Lobotomypatch
                                     isError = true;
                                 }
                             }
-                            this.AssemList.Add(Assembly.LoadFile(fileInfo2.FullName));
+                            if (!this.AssemList.Contains(modAssembly))
+                            {
+                                this.AssemList.Add(modAssembly);
+                            }
                         }
                     }
                 }

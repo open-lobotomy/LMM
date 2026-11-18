@@ -1,4 +1,4 @@
-﻿using Harmony;
+﻿using HarmonyLib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -1173,14 +1173,14 @@ namespace LobotomyBaseMod
 		{
 			if (!Inited)
 			{
-				HarmonyInstance harmonyInstance = HarmonyInstance.Create("Lobotomy.abcdcode.MidnightEGO");
+				Harmony harmonyInstance = new Harmony("Lobotomy.abcdcode.MidnightEGO");
 				MethodInfo method = typeof(ModDebug).GetMethod("Debug_Log", AccessTools.all);
-				harmonyInstance.Patch(typeof(UnityEngine.Debug).GetMethod("Log", AccessTools.all, null, new Type[] { typeof(object) }, null), null, new HarmonyMethod(method), null);
+				harmonyInstance.Patch(typeof(UnityEngine.Debug).GetMethod("Log", AccessTools.all, null, new Type[] { typeof(object) }, null), postfix: new HarmonyMethod(method));
 				method = typeof(ModDebug).GetMethod("Debug_LogError", AccessTools.all);
-				harmonyInstance.Patch(typeof(UnityEngine.Debug).GetMethod("LogError", AccessTools.all, null, new Type[] { typeof(object) }, null), null, new HarmonyMethod(method), null);
+				harmonyInstance.Patch(typeof(UnityEngine.Debug).GetMethod("LogError", AccessTools.all, null, new Type[] { typeof(object) }, null), postfix: new HarmonyMethod(method));
 
 				method = typeof(ModDebug).GetMethod("Debug_LogException", AccessTools.all);
-				harmonyInstance.Patch(typeof(UnityEngine.Debug).GetMethod("LogException", AccessTools.all, null, new Type[] { typeof(Exception) }, null), null, new HarmonyMethod(method), null);
+				harmonyInstance.Patch(typeof(UnityEngine.Debug).GetMethod("LogException", AccessTools.all, null, new Type[] { typeof(Exception) }, null), postfix: new HarmonyMethod(method));
 
 				Inited = true;
 			}

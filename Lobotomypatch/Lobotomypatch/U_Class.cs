@@ -1,5 +1,4 @@
-﻿using Harmony;
-using LobotomyBaseMod;
+﻿using LobotomyBaseMod;
 using Patchwork.Attributes;
 using System;
 using System.Collections.Generic;

@@ -5,7 +5,6 @@ using System.Linq;
 using System.Reflection;
 using System.Security.Policy;
 using System.Text;
-using Harmony;
 using UnityEngine;
 using System.Linq.Expressions;
 using Newtonsoft.Json;
@@ -141,7 +140,10 @@ namespace LobotomyBaseModLib
     }
     public static class ExtenionUtil_Lib
     {
-        
+        private const BindingFlags AllFlags =
+            BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static
+            | BindingFlags.GetField | BindingFlags.SetField | BindingFlags.GetProperty | BindingFlags.SetProperty;
+
         public static T JsonDeSerialize<T>(string json)
         {
             return (T)JsonConvert.DeserializeObject(json);
@@ -156,15 +158,15 @@ namespace LobotomyBaseModLib
         }
         public static object Invoke(this object obj, string methodname, object[] parameter)
         {
-            return obj.GetType().GetMethod(methodname, AccessTools.all | BindingFlags.FlattenHierarchy).Invoke(obj, parameter);
+            return obj.GetType().GetMethod(methodname, AllFlags | BindingFlags.FlattenHierarchy).Invoke(obj, parameter);
         }
         public static T GetFieldValue<T>(this object obj, string name)
         {
-            return (T)obj.GetType().GetField(name, AccessTools.all | BindingFlags.FlattenHierarchy).GetValue(obj);
+            return (T)obj.GetType().GetField(name, AllFlags | BindingFlags.FlattenHierarchy).GetValue(obj);
         }
         public static Func<T, R> GetFieldValueGetter<T, R>(this T obj, string name)
         {
-            return CreateFieldGetter<T, R>(obj.GetType().GetField(name, AccessTools.all | BindingFlags.FlattenHierarchy));
+            return CreateFieldGetter<T, R>(obj.GetType().GetField(name, AllFlags | BindingFlags.FlattenHierarchy));
         }
         public static Dictionary<Type, Dictionary<string, object>> GetFieldCache = new Dictionary<Type, Dictionary<string, object>>();
         public static Func<T, R> CreateFieldGetter<T, R>(FieldInfo fieldInfo)
@@ -193,11 +195,11 @@ namespace LobotomyBaseModLib
         }
         public static void SetFieldValue(this object obj, string name, object value)
         {
-            obj.GetType().GetField(name, AccessTools.all | BindingFlags.FlattenHierarchy).SetValue(obj, value);
+            obj.GetType().GetField(name, AllFlags | BindingFlags.FlattenHierarchy).SetValue(obj, value);
         }
         public static Action<T, R> SetFieldValueSetter<T, R>(this T obj, string name)
         {
-            return CreateFieldSetter<T, R>(obj.GetType().GetField(name, AccessTools.all | BindingFlags.FlattenHierarchy));
+            return CreateFieldSetter<T, R>(obj.GetType().GetField(name, AllFlags | BindingFlags.FlattenHierarchy));
         }
         public static Dictionary<Type, Dictionary<string, object>> SetFieldCache = new Dictionary<Type, Dictionary<string, object>>();
         public static DirectoryInfo CheckNamedDir(this DirectoryInfo dir, string name)

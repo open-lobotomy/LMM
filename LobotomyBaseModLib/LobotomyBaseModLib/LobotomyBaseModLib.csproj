@@ -1,67 +1,40 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{D6BC4645-6C67-423E-83C5-8ECB0A73942B}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>LobotomyBaseModLib</RootNamespace>
+    <TargetFramework>net35</TargetFramework>
+    <LangVersion>9.0</LangVersion>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <AssemblyName>LobotomyBaseModLib</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
+    <RootNamespace>LobotomyBaseModLib</RootNamespace>
     <Deterministic>true</Deterministic>
-    <TargetFrameworkProfile />
+    <DebugType>portable</DebugType>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <NoWarn>NU1903</NoWarn>
+    <GameManaged Condition="'$(GameManaged)' == '' and '$(LMM_GAME_MANAGED)' != ''">$(LMM_GAME_MANAGED)</GameManaged>
+    <GameManaged Condition="'$(GameManaged)' == '' and Exists('$(MSBuildThisFileDirectory)..\..\external\Managed\UnityEngine.CoreModule.dll')">$(MSBuildThisFileDirectory)..\..\external\Managed</GameManaged>
+    <GameManaged Condition="'$(GameManaged)' == '' and Exists('$(MSBuildThisFileDirectory)..\..\..\..\game-files-do-not-publish\Managed\UnityEngine.CoreModule.dll')">$(MSBuildThisFileDirectory)..\..\..\..\game-files-do-not-publish\Managed</GameManaged>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
-  </PropertyGroup>
-  <PropertyGroup>
-    <AssemblyOriginatorKeyFile>
-    </AssemblyOriginatorKeyFile>
-  </PropertyGroup>
-  <PropertyGroup>
-    <DelaySign>true</DelaySign>
-  </PropertyGroup>
+
+  <Target Name="ValidatePrivateBuildReferences" BeforeTargets="ResolveReferences">
+    <Error Condition="'$(GameManaged)' == '' Or !Exists('$(GameManaged)/UnityEngine.CoreModule.dll')" Text="Supply -p:GameManaged=&lt;path-to-Managed&gt; containing UnityEngine.dll and UnityEngine.CoreModule.dll." />
+  </Target>
+
   <ItemGroup>
-    <Reference Include="0Harmony">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\LobotomyCorp\LobotomyCorp_Data\LobotomyBasemodPatcher\0Harmony.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=3.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.3.5.8\lib\35\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Core" />
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+      <_Parameter1>LobotomyBaseMod.Tests</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies.net35" Version="1.0.3" PrivateAssets="all" />
+    <PackageReference Include="Mono.Cecil" Version="0.10.4" />
+    <PackageReference Include="Newtonsoft.Json" Version="3.5.8" />
     <Reference Include="UnityEngine">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\LobotomyCorp\LobotomyCorp_Data\Managed\UnityEngine.dll</HintPath>
+      <HintPath>$(GameManaged)/UnityEngine.dll</HintPath>
+      <Private>false</Private>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\LobotomyCorp\LobotomyCorp_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+      <HintPath>$(GameManaged)/UnityEngine.CoreModule.dll</HintPath>
+      <Private>false</Private>
     </Reference>
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Class1.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

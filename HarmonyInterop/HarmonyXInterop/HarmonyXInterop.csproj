@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Product>HarmonyXInterop</Product>
+    <AssemblyName>HarmonyXInterop</AssemblyName>
+    <RootNamespace>HarmonyXInterop</RootNamespace>
+    <Version>1.0.0.0</Version>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="HarmonyX" Version="2.10.2" />
+    <PackageReference Include="Mono.Cecil" Version="0.10.4" />
+    <PackageReference Include="MonoMod.RuntimeDetour" Version="22.7.31.1" />
+    <PackageReference Include="MonoMod.Utils" Version="22.7.31.1" />
+  </ItemGroup>
+</Project>

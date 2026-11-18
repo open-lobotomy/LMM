@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Product>0Harmony109</Product>
+    <AssemblyName>0Harmony109</AssemblyName>
+    <RootNamespace>Harmony</RootNamespace>
+    <Version>1.0.9.0</Version>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HarmonyXInterop\HarmonyXInterop.csproj" />
+  </ItemGroup>
+</Project>

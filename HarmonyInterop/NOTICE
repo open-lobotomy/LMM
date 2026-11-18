@@ -1,0 +1,31 @@
+MIT License and Third-Party Notices for `HarmonyInterop`
+
+`HarmonyXInterop`, `0Harmony109`, and `0Harmony12` are built from MIT-licensed upstream sources
+so mods compiled against Harmony 1.0.9.x or Harmony 1.2.0.x forward their patches at runtime
+into the shared HarmonyX 2.x detour backend without external prebuilt interop binaries.
+
+1. `Harmony109` (`0Harmony109.dll`) and `Harmony12` (`0Harmony12.dll`) surface APIs:
+   Derived from Andreas Pardeike's Harmony (`v1.0.9.x` and `v1.2.0.x`), MIT License.
+   Copyright (c) 2017 Andreas Pardeike
+
+2. `HarmonyXInterop` (`HarmonyXInterop.dll`) and runtime forwarding shims:
+   Derived from `BepInEx/BepInEx.Harmony` (`HarmonyXInterop`), MIT License.
+   Copyright (c) 2019 BepInEx contributors
+
+3. Native LMM `0Harmony12` `PatchProcessor.Patch()` `DynamicMethod` return-value fix and local
+   build integration are released under the MIT License alongside this directory.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+associated documentation files (the "Software"), to deal in the Software without restriction,
+including without limitation the rights to use, copy, modify, merge, publish, distribute,
+sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or
+substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT
+NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.

@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <IsTestProject>true</IsTestProject>
+    <IsPackable>false</IsPackable>
+    <Nullable>disable</Nullable>
+    <NoWarn>NU1903</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LobotomyBaseModLib\LobotomyBaseModLib\LobotomyBaseModLib.csproj" SkipGetTargetFrameworkProperties="true" />
+    <ProjectReference Include="..\HarmonyInterop\HarmonyXInterop\HarmonyXInterop.csproj" SkipGetTargetFrameworkProperties="true" />
+    <ProjectReference Include="..\HarmonyInterop\Harmony109\Harmony109.csproj" SkipGetTargetFrameworkProperties="true">
+      <Aliases>H109</Aliases>
+    </ProjectReference>
+    <ProjectReference Include="..\HarmonyInterop\Harmony12\Harmony12.csproj" SkipGetTargetFrameworkProperties="true">
+      <Aliases>H12</Aliases>
+    </ProjectReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.3.0" />
+    <PackageReference Include="xunit.v3" Version="3.2.2" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="3.1.5" />
+    <PackageReference Include="coverlet.collector" Version="8.0.0">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Mono.Cecil" Version="0.11.6" />
+    <PackageReference Include="HarmonyX" Version="2.10.2" />
+    <PackageReference Include="MonoMod.Utils" Version="22.7.31.1" />
+    <PackageReference Include="MonoMod.RuntimeDetour" Version="22.7.31.1" />
+  </ItemGroup>
+</Project>
